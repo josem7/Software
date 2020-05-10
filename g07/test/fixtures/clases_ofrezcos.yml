@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uid: 
+  precio: 
+  hora_termino: 2019-06-12 11:52:03
+
+two:
+  uid: 
+  precio: 
+  hora_termino: 2019-06-12 11:52:03

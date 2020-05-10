@@ -1,0 +1,32 @@
+<%= form_with(model: @sala_ocupada, url: campu_room_sala_ocupadas_path, local: true) do |form| %>
+  <% if sala_ocupada.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(sala_ocupada.errors.count, "error") %> prohibited this sala_ocupada from being saved:</h2>
+
+      <ul>
+      <% sala_ocupada.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :evento %>
+    <%= form.text_field :evento, id: :sala_ocupada_evento %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inicio %>
+    <%= form.datetime_select :inicio, id: :sala_ocupada_inicio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :termino %>
+    <%= form.datetime_select :termino, id: :sala_ocupada_termino %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Reservar sala"%>
+  </div>
+<% end %>

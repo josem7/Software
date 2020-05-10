@@ -1,0 +1,2 @@
+class JoinClasesOfrezco < ApplicationRecord
+end

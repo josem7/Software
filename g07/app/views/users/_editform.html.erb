@@ -1,0 +1,32 @@
+<%= form_with(model: current_user, url: '/users/' + current_user.id.to_s, local: true, html: { multipart: true }) do |form| %>
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name, id: :first_name %>
+  </div>
+
+  <%= form.label :last_name %>
+  <%= form.text_field :last_name, id: :last_name %>
+</div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_area :email, id: :email %>
+  </div>
+
+
+
+  <div class="field">
+    <%= form.label :about %>
+    <%= form.text_area :about, id: :about %>
+  </div>
+
+  <div>
+    <%= form.file_field :avatar %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Editar Perfil"%>
+  </div>
+
+
+<% end %>

@@ -1,0 +1,215 @@
+<p id="notice"><%= notice %></p>
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<h1>
+  <strong>Sala:</strong>
+  <%= @room.nombre %>
+</h1>
+
+<p>
+  <strong>Ubicacion:</strong>
+  <%= @room.ubicacion %>
+</p>
+<% if Admin.exists?(uid: current_user.id) %>
+  <%= button_to 'Edit', edit_campu_room_path(@campu, @room), method: :get %> 
+<% end %>
+<%= button_to 'Go to Campus', campu_path(@campu), method: :get %>
+
+<h1>Eventos</h1>
+
+<p>
+  <strong>Grupos de Estudio:</strong>
+</p>
+
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Curso</th>
+      <th>Capacidad</th>
+      <th>Hora de Inicio</th>
+      <th>Hora de Término</th>
+      <th>Sala de estudios</th>
+      <th>Inscritos</th>
+      <th colspan="6"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @room.grupo_estudios.each do |grupo_estudio| %>
+      <tr>
+        <td><%= grupo_estudio.curso %></td>
+        <td><%= grupo_estudio.capacidad %></td>
+        <td><%= grupo_estudio.inicio %></td>
+        <td><%= grupo_estudio.termino %></td>
+        <td><%= @room.nombre %></td>
+        <td><%= JoinGrupoEstudio.where(eid: grupo_estudio.id).count %></td>
+        <td><%= link_to 'Show', campu_room_grupo_estudio_path(@campu, @room, grupo_estudio) %></td>
+        <% if not JoinGrupoEstudio.exists?(uid: current_user.id, eid: grupo_estudio.id)%>
+        <td><%= link_to 'Unirme', '/campus/' + @campu.id.to_s + '/rooms/' + @room.id.to_s + '/grupo_estudios/' + grupo_estudio.id.to_s + '/unirme_sala' %></td>
+        <% else %>
+        <td><%= link_to 'Abandonar', '/campus/' + @campu.id.to_s + '/rooms/' + @room.id.to_s + '/grupo_estudios/' + grupo_estudio.id.to_s + '/abandonar_sala' %></td>
+        <% end %>
+        <% if Admin.exists?(uid: current_user.id) or grupo_estudio.creador_id == current_user.id %>
+          <td><%= link_to 'Edit', edit_campu_room_grupo_estudio_path(@campu, @room, grupo_estudio) %></td>
+          <td><%= link_to 'Destroy', campu_room_grupo_estudio_path(@campu, @room, grupo_estudio), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <strong>Clases Particulares (busco):</strong>
+</p>
+
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Curso</th>
+      <th>Hora Inicio</th>
+      <th>Hora Término</th>
+      <th>Sala de estudios</th>
+      <th>Inscritos</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @room.clases_buscos.each do |clase| %>
+      <tr>
+        <% @curso = Curso.find(clase.cid) %>
+        <td><%= @curso.nombre %></td>
+        <td><%= clase.inicio %></td>
+        <td><%= clase.termino %></td>
+        <td><%= @room.nombre %></td>
+        <td><%= JoinClasesBusco.where(eid: clase.id).count %></td>
+        <td><%= link_to 'Show', campu_room_clases_busco_path(@campu, @room, clase) %></td>
+        <% if not JoinClasesBusco.exists?(uid: current_user.id, eid: clase.id)%>
+        <td><%= link_to 'Unirme', '/campus/' + @campu.id.to_s + '/rooms/' + @room.id.to_s + '/clases_buscos/' + clase.id.to_s + '/unirme_sala' %></td>
+        <% else %>
+        <td><%= link_to 'Abandonar', '/campus/' + @campu.id.to_s + '/rooms/' + @room.id.to_s + '/clases_buscos/' + clase.id.to_s + '/abandonar_sala' %></td>
+        <% end %>
+        <% if Admin.exists?(uid: current_user.id) %>
+          <td><%= link_to 'Edit', edit_campu_room_clases_busco_path(@campu, @room, clase) %></td>
+          <td><%= link_to 'Destroy', campu_room_clases_busco_path(@campu, @room, clase), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <strong>Clases Particulares (ofrezco):</strong>
+</p>
+
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Curso</th>
+      <th>Profesor</th>
+      <th>Precio</th>
+      <th>Hora Inicio</th>
+      <th>Hora Término</th>
+      <th>Sala de Estudios</th>
+      <th>Inscritos</th>
+      <th colspan="7"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @room.clases_ofrezcos.each do |clase| %>
+      <tr>
+        <% @curso = Curso.find(clase.cid) %>
+        <td><%= @curso.nombre %></td>
+        <% @user = User.find(clase.uid) %>
+        <td><%= @user.first_name + ' ' + @user.last_name %></td>
+        <td><%= clase.precio %></td>
+        <td><%= clase.inicio %></td>
+        <td><%= clase.termino %></td>
+        <td><%= @room.nombre %></td>
+        <td><%= JoinClasesOfrezco.where(eid: clase.id).count %></td>
+        <td><%= link_to 'Show', campu_room_clases_ofrezco_path(@campu, @room, clase) %></td>
+        <% if not JoinClasesOfrezco.exists?(uid: current_user.id, eid: clase.id)%>
+        <td><%= link_to 'Unirme', '/campus/' + @campu.id.to_s + '/rooms/' + @room.id.to_s + '/clases_ofrezcos/' + clase.id.to_s + '/unirme_sala' %></td>
+        <% else %>
+        <td><%= link_to 'Abandonar', '/campus/' + @campu.id.to_s + '/rooms/' + @room.id.to_s + '/clases_ofrezcos/' + clase.id.to_s + '/abandonar_sala' %></td>
+        <% end %>
+        <% if Admin.exists?(uid: current_user.id) %>
+          <td><%= link_to 'Edit', edit_campu_room_clases_ofrezco_path(@campu, @room, clase) %></td>
+          <td><%= link_to 'Destroy', campu_room_clases_ofrezco_path(@campu, @room, clase), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <strong>Salas Ocupadas:</strong>
+</p>
+
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Sala</th>
+      <th>Evento</th>
+      <th>Hora de Inicio</th>
+      <th>Hora de Término</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @room.sala_ocupadas.each do |sala_ocupada| %>
+      <tr>
+        <td><%= @room.nombre %></td>
+        <td><%= sala_ocupada.evento %></td>
+        <td><%= sala_ocupada.inicio %></td>
+        <td><%= sala_ocupada.termino %></td>
+        <td><%= link_to 'Show', campu_room_sala_ocupada_path(@campu, @room, sala_ocupada) %></td>
+        <td><%= link_to 'Edit', edit_campu_room_sala_ocupada_path(@campu, @room, sala_ocupada) %></td>
+        <td><%= link_to 'Destroy', campu_room_sala_ocupada_path(@campu, @room, sala_ocupada), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<p>
+  <strong>Crear Eventos:</strong>
+</p>
+
+<%= button_to 'Grupo de Estudio', new_campu_room_grupo_estudio_path(@campu, @room), method: :get %>
+  <% if Admin.exists?(uid: current_user.id) %>
+<%= button_to 'Sala Ocupada', new_campu_room_sala_ocupada_path(@campu, @room), method: :get %>
+<% end %>
+<br>
+<h1>Rating</h1>
+<% @disp = Rate.where(:rid => @room.id).average(:disp) %>
+<% @enchufe = Rate.where(:rid => @room.id).average(:enchufe) %>
+<% @ruido = Rate.where(:rid => @room.id).average(:ruido) %>
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Puntaje Disponibilidad</th>
+      <th>Puntaje Enchufes</th>
+      <th>Puntaje Ruido</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+        <td><%= @disp %></td>
+        <td><%= @enchufe %></td>
+        <td><%= @ruido %></td>
+      </tr>
+  </tbody>
+</table>
+<%= button_to 'Rate', new_campu_room_rate_path(@campu, @room), method: :get%>

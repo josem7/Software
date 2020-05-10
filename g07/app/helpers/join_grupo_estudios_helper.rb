@@ -1,0 +1,2 @@
+module JoinGrupoEstudiosHelper
+end

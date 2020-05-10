@@ -1,0 +1,11 @@
+<h1>Ofrecer Clases</h1>
+
+<%= render 'form', clases_ofrezco: @clases_ofrezco %>
+
+<% if @room %>
+<%= link_to 'Back', campu_room_path(@campu, @room) %>
+<% end %>
+
+<% if @curso %>
+<%= link_to 'Back', curso_path(@curso) %>
+<% end %>

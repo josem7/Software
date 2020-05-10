@@ -1,0 +1,32 @@
+<%= form_with(model: @rates, url: campu_room_rates_path, local: true) do |form| %>
+  <% if room.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(room.errors.count, "error") %> prohibited this room from being saved:</h2>
+
+      <ul>
+      <% room.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :ptje_disponibilidad %>
+    <%= form.text_field :ptje_disponibilidad, id: :room_ptje_disponibilidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ptje_enchufes %>
+    <%= form.text_field :ptje_enchufes, id: :room_ptje_enchufes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :ptje_ruido %>
+    <%= form.text_field :ptje_ruido, id: :room_ptje_ruido %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

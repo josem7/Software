@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>De:</strong>
+  <% @from = User.find(@message.from)%>
+  <%= @from.first_name%>
+  <%= @from.last_name%>
+</p>
+
+<p>
+  <strong>Asunto:</strong>
+  <%= @message.subject %>
+</p>
+
+<p>
+  <strong>Contenido:</strong>
+  <%= @message.content %>
+</p>
+
+<p>
+  <%= link_to 'Responder Mensaje', '/' + @from.id.to_s + '/messages/new' %>
+</p>
+<%= link_to 'volver a perfil', '/users/'+ current_user.id.to_s %>

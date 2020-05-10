@@ -1,0 +1,2 @@
+class JoinGrupoEstudio < ApplicationRecord
+end

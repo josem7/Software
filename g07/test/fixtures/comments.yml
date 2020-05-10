@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pid: 1
+  uid: 1
+  autor: MyString
+  contenido: MyText
+
+two:
+  pid: 1
+  uid: 1
+  autor: MyString
+  contenido: MyText

@@ -1,0 +1,12 @@
+<h1>Rate</h1>
+<%= form_for :rates, url:campu_room_rates_path, html: {class: "nifty_form"} do |f| %>
+  <h4>Puntaje Disponibilidad</h4>
+  <%= f.number_field(:disponibilidad, in: 0..10.0, step: 1) %>
+  <p>
+  <h4>Puntaje Enchufes</h4>
+  <%= f.number_field(:ptje_enchufes, in: 0..10.0, step: 1) %>
+  <p>
+  <h4>Puntaje Ruido</h4>
+  <%= f.number_field(:ruido, in: 0..10.0, step: 1) %>
+  <%= f.submit "Crear" %>
+<% end %>

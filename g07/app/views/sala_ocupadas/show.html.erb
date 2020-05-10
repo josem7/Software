@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sala:</strong>
+  <% @room = Room.find(@sala_ocupada.room_id) %>
+  <%= @room.nombre %>
+</p>
+
+<p>
+  <strong>Evento:</strong>
+  <%= @sala_ocupada.evento %>
+</p>
+
+<p>
+  <strong>Hora de inicio:</strong>
+  <%= @sala_ocupada.inicio %>
+</p>
+
+<p>
+  <strong>Hora de término:</strong>
+  <%= @sala_ocupada.termino %>
+</p>
+
+<%= link_to 'Edit', edit_campu_room_sala_ocupada_path(@campu, @room, @sala_ocupada) %> |
+<%= link_to 'Back', campu_room_path(@campu, @room) %>

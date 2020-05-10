@@ -1,0 +1,27 @@
+<%= form_with(model: @evento, url: campu_room_eventos_path, local: true) do |form| %>
+  <% if evento.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(evento.errors.count, "error") %> prohibited this evento from being saved:</h2>
+
+      <ul>
+      <% evento.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :fecha_creacion %>
+    <%= form.datetime_select :fecha_creacion, id: :evento_fecha_creacion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tipo %>
+    <%= form.select :tipo, options_for_select(["Select One", "Grupo de estudio", "Clases particulares (busco)", "Clases particulares (ofrezco)", "Sala ocupada"],:disabled => ["Select One"]), :class => 'genForm_dropBox' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

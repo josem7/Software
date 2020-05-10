@@ -1,0 +1,10 @@
+<h1>Rates#create</h1>
+<p>Find me in app/views/rates/create.html.erb</p>
+<%= form_for (@rate) do |f| %>
+  <%= f.number_field :disponibilidad %>
+  <%= f.number_field :ptje_enchufes %>
+  <%= f.number_field :ruido %>
+  <%= f.submit "Create" %>
+<% end %>
+
+<%= link_to 'Go to Campus', campu_path(@campu) %>

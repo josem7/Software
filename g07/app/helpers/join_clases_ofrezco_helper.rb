@@ -1,0 +1,2 @@
+module JoinClasesOfrezcoHelper
+end

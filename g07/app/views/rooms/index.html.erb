@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Rooms</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Ubicacion</th>
+      <th>Ptje disponibilidad</th>
+      <th>Ptje enchufes</th>
+      <th>Ptje ruido</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rooms.each do |room| %>
+      <tr>
+        <td><%= room.nombre %></td>
+        <td><%= room.ubicacion %></td>
+        <td><%= room.ptje_disponibilidad %></td>
+        <td><%= room.ptje_enchufes %></td>
+        <td><%= room.ptje_ruido %></td>
+        <td><%= link_to 'Show', campu_rooms_path %></td>
+        <% if Admin.exists?(uid: current_user.id) %>
+          <td><%= link_to 'Edit', edit_campu_room_path %></td>
+          <td><%= link_to 'Destroy', campu_rooms_path, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<% if Admin.exists?(uid: current_user.id) %>
+  <%= link_to 'Nueva Sala', new_campu_room_path %>
+<% end %>

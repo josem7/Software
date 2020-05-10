@@ -1,0 +1,21 @@
+<%= form_with(model: @publication, url: curso_publications_path, local: true) do |form| %>
+
+  <div class="field">
+    <%= form.label :titulo %>
+    <%= form.text_field :titulo, id: :titulo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contenido %>
+    <%= form.text_area :contenido, id: :contenido %>
+  </div>
+
+  <div class="field">
+    <%= form.label :descripcion %>
+    <%= form.text_field :descripcion, id: :descripcion %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Crear Publicacion"%>
+  </div>
+<% end %>

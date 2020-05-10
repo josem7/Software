@@ -1,0 +1,2 @@
+module JoinCursosHelper
+end

@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sala Ocupadas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sala</th>
+      <th>Evento</th>
+      <th>Hora termino</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sala_ocupadas.each do |sala_ocupada| %>
+      <tr>
+        <td><%= sala_ocupada.sala %></td>
+        <td><%= sala_ocupada.evento %></td>
+        <td><%= sala_ocupada.hora_termino %></td>
+        <td><%= link_to 'Show', sala_ocupada %></td>
+        <td><%= link_to 'Edit', edit_sala_ocupada_path(sala_ocupada) %></td>
+        <td><%= link_to 'Destroy', sala_ocupada, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nueva Sala Ocupada', new_sala_ocupada_path %>

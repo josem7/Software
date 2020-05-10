@@ -1,0 +1,288 @@
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<h1> <%= @user.first_name %> <%= @user.last_name %></h1>
+
+<%= image_tag @user.avatar.url(:small) %>
+
+<h3>Descripcion</h3>
+<p><%= @user.about %></p>
+
+
+
+<% if current_user.id == @user.id%>
+<p><%= button_to 'Editar perfil', edit_user_path, method: :get  %></p>
+<% if Admin.exists?(uid: current_user.id)%>
+<p><%= button_to 'Estadisticas de la pagina', '/users/' + current_user.id.to_s + '/stats', method: :get  %></p>
+<% end %>
+
+<h1>Mensajes</h1>
+<% @message = Message.where(:to => @user.id) %>
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>From</th>
+      <th>Subject</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @message.each do |m| %>
+    <% @from = User.find(m.from) %>
+
+      <tr>
+        <td><%= @from.first_name %></td>
+        <td><%= m.subject %></td>
+        <td><%= link_to 'Show', 'messages/' + m.id.to_s %></td>
+        <td><%= link_to 'Responder Mensaje', '/' + m.from.to_s + '/messages/new' %></td>
+        <td><%= link_to 'Destroy', '/messages/' + m.id.to_s + '/destroy' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+  <p><%= link_to 'Nuevo Mensaje', '/' + @user.id.to_s + '/messages/new' %></p>
+
+<%else%>
+
+  <p><%= link_to 'Enviar Mensaje', '/' + @user.id.to_s + '/messages/new' %></p>
+<% end %>
+
+
+<h1>Cursos</h1>
+<% @joined_cursos = JoinCurso.where(:uid => @user.id) %>
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Nombre</th>
+      <th>Sigla</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @joined_cursos.each do |c| %>
+    <% @curso = Curso.find(c.cid) %>
+
+      <tr>
+        <td><%= @curso.nombre %></td>
+        <td><%= @curso.sigla %></td>
+        <td><%= link_to 'Show', curso_path(@curso) %></td>
+        <% if Admin.exists?(uid: current_user.id) %>
+          <td><%= link_to 'Edit', edit_curso_path(@curso) %></td>
+          <td><%= link_to 'Destroy', curso_path(@curso), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h1>Publicaciones Favoritas</h1>
+<% @favorito = Favourite.where(:uid => @user.id) %>
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Titulo</th>
+      <th>Descripcion</th>
+      <th>Nombre Curso</th>
+      <th>Sigla Curso</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @favorito.each do |c| %>
+    <% @publication = Publication.find(c.pid) %>
+    <% @curso = Curso.find(@publication.cid) %>
+
+      <tr>
+        <td><%= @publication.titulo %></td>
+        <td><%= @publication.descripcion %></td>
+        <td><%= @curso.nombre %></td>
+        <td><%= @curso.sigla %></td>
+        <td><%= link_to 'Show', '/cursos/'+ @curso.id.to_s + '/publications/'+ @publication.id.to_s %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if Admin.exists?(uid: current_user.id) and current_user.id == @user.id %>
+  <h1>Solicitudes de Moderadores</h1>
+  <% @Solicitudes = Moderator.where(:estado => 0) %>
+  <table class="table table-hover">
+    <thead style="color:white; background-color:black";>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Sigla Curso</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @Solicitudes.each do |s| %>
+      <% @user = User.find(s.uid) %>
+      <% @curso = Curso.find(s.cid) %>
+
+        <tr>
+          <td><%= @user.first_name %></td>
+          <td><%= @user.last_name %></td>
+          <td><%= @curso.sigla %></td>
+          <td><%= link_to 'Aceptar Moderador', '/' + @curso.id.to_s + '/' + @user.id.to_s + '/accept' %></td>
+          <td><%= link_to 'Rechazar Moderador', '/' + @curso.id.to_s + '/' + @user.id.to_s + '/reject' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+
+  <h1>Todos los Moderadores</h1>
+  <% @Solicitudes = Moderator.where(:estado => 1) %>
+  <table class="table table-hover">
+    <thead style="color:white; background-color:black";>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Sigla Curso</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @Solicitudes.each do |s| %>
+      <% @user = User.find(s.uid) %>
+      <% @curso = Curso.find(s.cid) %>
+
+        <tr>
+          <td><%= @user.first_name %></td>
+          <td><%= @user.last_name %></td>
+          <td><%= @curso.sigla %></td>
+          <td><%= link_to 'Deshacer Moderador', '/' + @curso.id.to_s + '/' + @user.id.to_s + '/remove' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if Moderator.exists?(uid: @user.id, estado:1) %>
+<h1>Cursos donde es Moderador</h1>
+  <% @Moderador = Moderator.where(uid: current_user.id) %>
+  <table class="table table-hover">
+    <thead style="color:white; background-color:black";>
+      <tr>
+        <th>Nombre Cruso</th>
+        <th>Sigla</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @Moderador.each do |m| %>
+      <% @user = User.find(m.uid) %>
+      <% @curso = Curso.find(m.cid) %>
+
+        <tr>
+          <td><%= @curso.nombre %></td>
+          <td><%= @curso.sigla %></td>
+          <td><%= link_to 'Show', curso_path(@curso) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if ClasesOfrezco.exists?(uid: @user.id) %>
+<h1>Clases particulares ofrecidas</h1>
+  <% @clases_particulares = ClasesOfrezco.where(uid: current_user.id) %>
+  <table class="table table-hover">
+    <thead style="color:white; background-color:black";>
+      <tr>
+        <th>Curso</th>
+        <th>Precio</th>
+        <th>Hora Inicio</th>
+        <th>Hora término</th>
+        <th>Sala de estudios</th>
+        <th>Inscritos</th>
+        <th colspan="8"></th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @clases_particulares.each do |co| %>
+        <tr>
+          <% @curso = Curso.find(co.cid) %>
+          <td><%= @curso.nombre %></td>
+          <td><%= co.precio %></td>
+          <td><%= co.inicio %></td>
+          <td><%= co.termino %></td>
+          <% @room = Room.find(co.room_id)%>
+          <td><%= @room.nombre %></td>
+          <td><%= JoinClasesOfrezco.where(eid: co.id).count %></td>
+          <td><%= link_to 'Show', curso_clases_ofrezco_path(@curso, co) %></td>
+          <% if not JoinClasesOfrezco.exists?(uid: current_user.id, eid: co.id)%>
+          <td><%= link_to 'Unirme', '/cursos/'+ @curso.id.to_s + '/clases_ofrezcos/' + co.id.to_s + '/unirme_cursos' %></td>
+          <% else %>
+          <td><%= link_to 'Abandonar', '/cursos/'+ @curso.id.to_s + '/clases_ofrezcos/' + co.id.to_s + '/abandonar_cursos' %></td>
+          <% end %>
+            <% if Moderator.exists?(uid: current_user.id, cid: @curso.id, estado:1) or Admin.exists?(uid: current_user.id)%>
+            <!-- <td><%= link_to 'Edit', edit_curso_clases_ofrezco_path(@curso, co) %></td> -->
+            <td><%= link_to 'Destroy', curso_clases_ofrezco_path(@curso, co), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+        </tr>
+  <% end %>
+  <% end %>
+    </tbody>
+
+  </table>
+
+  <% if JoinClasesBusco.exists?(uid: @user.id) %>
+  <h1>Clases particulares buscadas</h1>
+    <% @clases_particulares = JoinClasesBusco.where(uid: current_user.id) %>
+    <table class="table table-hover">
+      <thead style="color:white; background-color:black";>
+        <tr>
+          <th>Curso</th>
+          <th>Hora Inicio</th>
+          <th>Hora término</th>
+          <th>Sala de estudios</th>
+          <th>Inscritos</th>
+          <th colspan="7"></th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @clases_particulares.each do |co| %>
+          <tr>
+            <% @clase =  ClasesBusco.find(co.eid) %>
+            <% @curso = Curso.find(@clase.cid) %>
+            <td><%= @curso.nombre %></td>
+            <td><%= @clase.inicio %></td>
+            <td><%= @clase.termino %></td>
+            <% @room = Room.find(@clase.room_id)%>
+            <td><%= @room.nombre %></td>
+            <td><%= JoinClasesBusco.where(eid: @clase.id).count %></td>
+            <td><%= link_to 'Show', curso_clases_busco_path(@curso, @clase) %></td>
+            <% if not JoinClasesBusco.exists?(uid: current_user.id, eid: @clase.id)%>
+            <td><%= link_to 'Unirme', '/cursos/'+ @curso.id.to_s + '/clases_buscos/' + @clase.id.to_s + '/unirme_cursos' %></td>
+            <% else %>
+            <td><%= link_to 'Abandonar', '/cursos/'+ @curso.id.to_s + '/clases_buscos/' + @clase.id.to_s + '/abandonar_cursos' %></td>
+            <% end %>
+              <% if Moderator.exists?(uid: current_user.id, cid: @curso.id, estado:1) or Admin.exists?(uid: current_user.id)%>
+              <!-- <td><%= link_to 'Edit', edit_curso_clases_busco_path(@curso, @clase) %></td> -->
+              <td><%= link_to 'Destroy', curso_clases_busco_path(@curso, @clase), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+          </tr>
+    <% end %>
+    <% end %>
+      </tbody>
+
+    </table>

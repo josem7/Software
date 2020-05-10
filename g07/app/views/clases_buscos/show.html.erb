@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<% if not @curso %>
+<% @desde_sala = true %>
+<% @curso = Curso.find(@clases_busco.cid) %>
+<% end %>
+
+<% if not @room %>
+<% @desde_curso = true %>
+<% @room = Room.find(@clases_busco.room_id) %>
+<% end %>
+
+<p>
+  <strong>Curso:</strong>
+  <%= @curso.nombre %>
+</p>
+
+<p>
+  <strong>Hora de Inicio:</strong>
+  <%= @clases_busco.inicio %>
+</p>
+
+<p>
+  <strong>Hora de Término:</strong>
+  <%= @clases_busco.termino %>
+</p>
+
+<p>
+  <strong>Sala de estudio:</strong>
+  <%= @room.nombre %>
+</p>
+
+<p>
+  <strong>Total inscritos:</strong>
+  <%= JoinClasesBusco.where(eid: @clases_busco.id).count %>
+</p>
+  <br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Participantes</th>
+      </tr>
+    </thead>
+    <tbody>
+  <% JoinClasesBusco.where(eid: @clases_busco.id).each do |co| %>
+      <% @user = User.find(co.uid) %>
+      <td><%= link_to @user.first_name + ' ' + @user.last_name, '/users/' + @user.id.to_s %> </td>
+    </tbody>
+  </table>
+<% end %>
+<% if @desde_curso %>
+<%= link_to 'Back to curso', curso_path(@curso) %>
+<% end %>
+
+<% if @desde_sala %>
+<%= link_to 'Back to sala', campu_room_path(@campu, @room) %>
+<% end %>

@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Clases Ofrezcos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Uid</th>
+      <th>Precio</th>
+      <th>Hora termino</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @clases_ofrezcos.each do |clases_ofrezco| %>
+      <tr>
+        <td><%= clases_ofrezco.uid %></td>
+        <td><%= clases_ofrezco.precio %></td>
+        <td><%= clases_ofrezco.hora_termino %></td>
+        <td><%= link_to 'Show', clases_ofrezco %></td>
+        <td><%= link_to 'Edit', edit_clases_ofrezco_path(clases_ofrezco) %></td>
+        <td><%= link_to 'Destroy', clases_ofrezco, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Clases Ofrezco', new_campu_room_clases_ofrezco_path %>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sala: MyString
+  evento: MyString
+  hora_termino: 2019-06-01 14:25:33
+
+two:
+  sala: MyString
+  evento: MyString
+  hora_termino: 2019-06-01 14:25:33

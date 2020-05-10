@@ -1,0 +1,2 @@
+class JoinCurso < ApplicationRecord
+end

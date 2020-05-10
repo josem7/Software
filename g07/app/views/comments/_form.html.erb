@@ -1,0 +1,10 @@
+<%= form_with(model: comment, url: curso_publication_comments_path, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :contenido %>
+    <%= form.text_field :contenido, id: :contenido %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Crear Comentario"%>
+  </div>
+<% end %>

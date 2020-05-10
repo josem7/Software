@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Curso:</strong>
+  <%= @grupo_estudio.curso %>
+</p>
+
+<p>
+  <strong>Capacidad:</strong>
+  <%= @grupo_estudio.capacidad %>
+</p>
+
+<p>
+  <strong>Hora inicio:</strong>
+  <%= @grupo_estudio.inicio %>
+</p>
+
+<p>
+  <strong>Hora termino:</strong>
+  <%= @grupo_estudio.termino %>
+</p>
+
+<p>
+  <strong>Fecha creacion:</strong>
+  <%= @grupo_estudio.created_at %>
+</p>
+
+<p>
+  <strong>Creador:</strong>
+  <%= User.find(@grupo_estudio.creador_id).first_name %>
+</p>
+
+<p>
+  <strong>Inscritos:</strong>
+  <%= JoinGrupoEstudio.where(eid: @grupo_estudio.id).count %>
+</p>
+
+<% if @curso %>
+<%= link_to 'Back to curso', curso_path(@curso) %>
+<% end %>
+
+<% if @room %>
+<%= link_to 'Back to sala', campu_room_path(@campu, @room) %>
+<% end %>

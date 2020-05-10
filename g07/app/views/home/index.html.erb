@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
+</style>
+<body>
+
+<!-- Page content -->
+<style>
+.bg-1 {
+  background: #2d2d30;
+  color: #bdbdbd;
+}
+.bg-1 h3 {color: #fff;}
+.bg-1 p {font-style: italic;}
+</style>
+
+<div class="w3-content" style="max-width:2000px;margin-top:46px">
+
+  <!-- Automatic Slideshow Images -->
+  <div class="mySlides w3-display-container w3-center">
+    <img src="http://www.radiouc.cl/wp-content/uploads/San-Joaquin-1.jpeg" style="width:100%">
+    <div class="w3-display-bottommiddle w3-container w3-text-black w3-padding-10 w3-hide-small">
+      <!-- <p><b>Donde el converge el conocimiento</b></p> -->
+    </div>
+  </div>
+  <!-- <div class="mySlides w3-display-container w3-center">
+    <img src="http://friends-uc.org/wp-content/uploads/2013/10/central_01-658x289.jpg" style="width:100%">
+    <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-10 w3-hide-small">
+      <h3>Casa Central</h3>
+      <p><b>The atmosphere in New York is lorem ipsum.</b></p>
+    </div>
+  </div> -->
+<% if not current_user %>
+<div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="no_logged">
+  <h2 class="w3-wide w3-center"><%= link_to "Inicia sesion", "/users/sign_in" %> o <%= link_to "Registrate", "/users/sign_up" %></h2>
+</div>
+<% end %>
+
+<% if current_user %>
+
+  <!-- Noticias de publicaciones -->
+<div class="bg-1" id="np">
+  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="s1">
+    <h2 class="w3-wide">Noticias de tus publicaciones</h2>
+    <ul class="w3-ul w3-border w3-white w3-text-black">
+    <% @publications = Publication.where(aid: current_user.id) %>
+    <% @publications.each do |pub| %>
+    <% @comentarios = Comment.where(pid: pub.id).order(created_at: :desc).take(3) %>
+    <% @comentarios.each do |com| %>
+    <li class="list-group-item"> <%= link_to com.autor, '/users/' + com.uid.to_s %></td> ha comentado tu publicacion <td><%= link_to pub.titulo, curso_publication_path(pub.cid, pub) %></li>
+    <% end %>
+    <% end %>
+    </ul>
+</div>
+</div>
+
+<div class="bg-1" id="ac">
+  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="s2">
+    <h2 class="w3-wide">Mira la actividad en tus cursos</h2>
+    <ul class="w3-ul w3-border w3-white w3-text-black">
+      <% @cursos = JoinCurso.where(:uid => current_user.id) %>
+      <% @cursos.each do |curso| %>
+      <% c = Curso.find(curso.cid)%>
+      <% @publications = Publication.where(:cid => curso.cid).order(created_at: :desc).take(3) %>
+      <% @publications.each do |pub| %>
+
+    <li class="list-group-item"> <%= link_to pub.autor, '/users/' + pub.aid.to_s %></td> ha publicado '<%= pub.titulo %>' en <td><%= link_to pub.curso,  '/cursos/' + pub.cid.to_s %></td>. <td><%= link_to 'Ver publicacion',  curso_publication_path(pub.cid, pub) %></li>
+    <% end %>
+    <% end %>
+    </ul>
+</div>
+</div>
+
+<div class="bg-1" id="cp">
+    <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="s3">
+      <h2 class="w3-wide">Clases particulares que podrias hacer</h2>
+      <ul class="w3-ul w3-border w3-white w3-text-black">
+        <% @joinc = JoinCurso.where(uid: current_user.id, tipo: "Profesor") %>
+        <% @joinc.each do |jc| %>
+        <% curso = Curso.find(jc.cid)%>
+        <% @clases = ClasesBusco.where(cid: jc.cid).order(created_at: :desc).take(3) %>
+        <% @clases.each do |clase| %>
+
+      <li class="list-group-item"> Se busca profesor para clases de <%= link_to curso.nombre, '/cursos/' + jc.cid.to_s %> mira la clase <%= link_to 'aqui', '/cursos/' + jc.cid.to_s + '/clases_buscos/' + clase.id.to_s %></li>
+      <% end %>
+      <% end %>
+      </ul>
+</div>
+</div>
+
+<div class="bg-1" id="ac">
+  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="s2">
+    <h2 class="w3-wide">Clases particulares que podrias tomar</h2>
+    <ul class="w3-ul w3-border w3-white w3-text-black">
+      <% @joinc = JoinCurso.where(uid: current_user.id, tipo: "Alumno") %>
+      <% @joinc.each do |jc| %>
+      <% curso = Curso.find(jc.cid)%>
+      <% @clases = ClasesOfrezco.where(cid: jc.cid).order(created_at: :desc).take(3) %>
+      <% @clases.each do |clase| %>
+
+    <li class="list-group-item">Se ofrecen clases de <%= link_to curso.nombre, '/cursos/' + jc.cid.to_s %> mira la clase <%= link_to 'aqui', '/cursos/' + jc.cid.to_s + '/clases_buscos/' + clase.id.to_s %></li>
+    <% end %>
+    <% end %>
+    </ul>
+</div>
+</div>
+
+    <% end %>
+
+  </div>
+
+  <!-- The Contact Section -->
+  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+    <h2 class="w3-wide w3-center">CONTACTO</h2>
+    <p class="w3-opacity w3-center"><i> Quieres saber mas? Ponte en contacto!</i></p>
+    <div class="w3-row w3-padding-32">
+      <div class="w3-col m6 w3-large w3-margin-bottom">
+        <i class="fa fa-map-marker" style="width:30px"></i> Santiago, Chile<br>
+        <i class="fa fa-phone" style="width:30px"></i> Tel: +569 81581902<br>
+        <i class="fa fa-envelope" style="width:30px"> </i> Email: desarrollo_web@grupo7.com<br>
+      </div>
+    </div>
+  </div>
+
+<!-- End Page Content -->
+</div>
+
+<!-- Image of location/map -->
+<img src="/w3images/map.jpg" class="w3-image w3-greyscale-min" style="width:100%">
+
+<script>
+// Automatic Slideshow - change image every 4 seconds
+var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}
+  x[myIndex-1].style.display = "block";
+  setTimeout(carousel, 4000);
+}
+
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+// When the user clicks anywhere outside of the modal, close it
+var modal = document.getElementById('ticketModal');
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
+</body>
+</html>

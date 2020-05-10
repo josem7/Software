@@ -1,0 +1,60 @@
+<p id="notice"><%= notice %></p>
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<h1>
+  <strong>Campus</strong>
+  <%= @campu.nombre %>
+</h1>
+
+<p>
+  <strong>Ubicacion:</strong>
+  <%= @campu.ubicacion %>
+</p>
+
+
+<p>
+<%= content_tag(:iframe,'', width: 500, height: 300, src: @campu.mapa) %>
+</p>
+<% if Admin.exists?(uid: current_user.id) %>
+  <%= link_to 'Edit', edit_campu_path(@campu) %> |
+<% end %>
+<%= link_to 'Go to all Campus', campus_path %>
+
+
+<h1>rooms</h1>
+
+<table class="table table-hover">
+  <thead style="color:white; background-color:black";>
+    <tr>
+      <th>Nombre</th>
+      <th>Ubicacion</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campu.rooms.each do |room| %>
+      <tr>
+        <td><%= room.nombre %></td>
+        <td><%= room.ubicacion %></td>
+        <td><%= link_to 'Show', campu_room_path(@campu, room) %></td>
+        <% if Admin.exists?(uid: current_user.id) %>
+          <td><%= link_to 'Edit', edit_campu_room_path(@campu, room) %></td>
+          <td><%= link_to 'Destroy', campu_room_path(@campu, room), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<% if Admin.exists?(uid: current_user.id) %>
+  <%= button_to 'Nueva Sala', new_campu_room_path(@campu), method: :get %>
+<% end %>

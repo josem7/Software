@@ -1,0 +1,79 @@
+<% if not @curso%>
+<%= form_with(model: @grupo_estudio, url: campu_room_grupo_estudios_path, local: true) do |form| %>
+  <% if grupo_estudio.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(grupo_estudio.errors.count, "error") %> prohibited this grupo_estudio from being saved:</h2>
+
+      <ul>
+      <% grupo_estudio.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+   <%= form.label :curso_sel, "Seleccionar Curso" %><br>
+   <%= form.collection_select :curso_sel, Curso.order(:nombre),:id,:nombre, include_blank: true %>
+ </div>
+
+  <div class="field">
+    <%= form.label :capacidad %>
+    <%= form.number_field :capacidad, id: :grupo_estudio_capacidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inicio %>
+    <%= form.datetime_select :inicio, id: :grupo_estudio_inicio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :termino %>
+    <%= form.datetime_select :termino, id: :grupo_estudio_termino %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Crear Grupo de Estudio"%>
+  </div>
+<% end %>
+<% end %>
+
+<% if not @room%>
+<%= form_with(model: @grupo_estudio, url: curso_grupo_estudios_path, local: true) do |form| %>
+  <% if grupo_estudio.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(grupo_estudio.errors.count, "error") %> prohibited this grupo_estudio from being saved:</h2>
+
+      <ul>
+      <% grupo_estudio.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <div class="field">
+    <%= form.label :room_sel, "Seleccionar Sala"%><br>
+    <%= form.collection_select :room_sel, Room.order(:nombre),:id,:nombre, include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :capacidad %>
+    <%= form.number_field :capacidad, id: :grupo_estudio_capacidad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inicio %>
+    <%= form.datetime_select :inicio, id: :grupo_estudio_inicio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :termino %>
+    <%= form.datetime_select :termino, id: :grupo_estudio_termino %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Crear Grupo de Estudio"%>
+  </div>
+<% end %>
+<% end %>

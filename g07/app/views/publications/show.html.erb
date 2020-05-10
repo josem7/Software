@@ -1,0 +1,90 @@
+<p id="notice"><%= notice %></p>
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+
+<h1>
+  <strong>Publicacion</strong>
+  <%= @publication.titulo %>
+</h1>
+
+<p>
+  <strong>Autor:</strong>
+  <%= @publication.autor %>
+</p>
+
+<p>
+  <strong>Contenido:</strong>
+  <%= @publication.contenido %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @publication.descripcion %>
+</p>
+
+<p>
+  <strong>Likes:</strong>
+  <%= Like.where(pid: @publication.id, tipo: 1).count %>
+</p>
+
+<p>
+  <strong>Dislikes:</strong>
+  <%=  Like.where(pid: @publication.id, tipo: 0).count  %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @publication.created_at %>
+</p>
+<% if Moderator.exists?(uid: current_user.id, cid: @curso.id, estado:1) or  @publication.aid == current_user.id or Admin.exists?(uid: current_user.id)%>
+  <%= link_to 'Edit', edit_curso_publication_path(@curso, @publication) %> |
+<% end %>
+<%= link_to 'Go to Curso', curso_path(@curso) %> |
+<%= link_to 'Like', '/cursos/'+ @curso.id.to_s + '/publications/'+ @publication.id.to_s + '/like' %> |
+<%= link_to 'Dislike', '/cursos/'+ @curso.id.to_s + '/publications/'+ @publication.id.to_s + '/dislike' %> |
+<%= link_to 'Comentar', new_curso_publication_comment_path(@curso, @publication) %> |
+<% if Favourite.exists?(uid: current_user.id, pid: @publication.id) %>
+  <%= link_to 'Unstar', '/cursos/'+ @curso.id.to_s + '/publications/'+ @publication.id.to_s + '/d_favourite' %>
+<% else %>
+  <%= link_to 'Star', '/cursos/'+ @curso.id.to_s + '/publications/'+ @publication.id.to_s + '/favourite' %>
+<% end %>
+<h1>Comentarios</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Autor</th>
+      <th>Likes</th>
+      <th>Dislikes</th>
+      <th>Fecha</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @comentarios = Comment.where(:pid => @publication.id) %>
+    <% @comentarios.each do |com| %>
+      <tr>
+        <td><%= com.contenido %></td>
+        <td><%= com.autor %></td>
+        <td><%= CommentLike.where(cid: com.id, tipo: 1).count %></td>
+        <td><%= CommentLike.where(cid: com.id, tipo: 0).count %></td>
+        <td><%= com.created_at %></td>
+        <td><%= link_to 'Like', '/cursos/'+ @curso.id.to_s + '/publications/'+ @publication.id.to_s + '/comments/'+ com.id.to_s + '/like' %>  </td>
+        <td><%= link_to 'Dislike', '/cursos/'+ @curso.id.to_s + '/publications/'+ @publication.id.to_s + '/comments/'+ com.id.to_s + '/dislike' %></td>
+        <% if Moderator.exists?(uid: current_user.id, cid: @curso.id, estado:1) or com.uid == current_user.id or Admin.exists?(uid: current_user.id)%>
+            <td>   <%= link_to 'Edit', edit_curso_publication_comment_path(@curso, @publication, com) %>  </td>
+            <td><%= link_to 'Destroy', curso_publication_comment_path(@curso, @publication, com), method: :delete, data: { confirm: 'Are you sure?' } %>  </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

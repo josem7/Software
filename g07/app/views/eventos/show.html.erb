@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha creacion:</strong>
+  <%= @evento.fecha_creacion %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @evento.tipo %>
+</p>
+
+<%= link_to 'Edit', edit_evento_path(@evento) %> |
+<%= link_to 'Go to room', campu_room_path(@campu, @room) %>
+<%= link_to 'Join', campu_room_evento_join_event_index_path(@campu, @room, @evento), method: :post%>

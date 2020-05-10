@@ -1,0 +1,13 @@
+<h1>Usuarios nuevos</h1>
+<%= line_chart User.group_by_day(:created_at).count, ytitle: "Usuarios", xtitle: "Fecha" %>
+
+<h1>Inscritos por curso</h1>
+<%= column_chart JoinCurso.group(:cid).count, ytitle: "Inscritos", xtitle: "ID Curso"  %>
+
+<h1>Tipos de eventos</h1>
+<%= pie_chart({"Grupos de estudio" => GrupoEstudio.count, "Sala ocupada" => SalaOcupada.count, "Clases busco" => ClasesBusco.count, "Clases ofrezco" => ClasesOfrezco.count}) %>
+
+<h1>Top 5 Publicaciones con mas comentarios</h1>
+<%= column_chart Comment.group(:pid).count.take(5), ytitle: "Comentarios", xtitle: "ID Publicacion" %>
+
+<p><%= link_to 'Volver al perfil', '/users/' + current_user.id.to_s %></p>

@@ -1,0 +1,19 @@
+<h1>Nuevo Mensaje</h1>
+<%= form_for :messages, url:'/' + @user.id.to_s + '/messages/create', html: {class: "nifty_form"} do |f| %>
+  <h4>To</h4>
+  <%if @user.id == current_user.id%>
+    <%= f.collection_select(:to, User.where.not(id: current_user.id), :id, :first_name) %>
+  <% else %>
+    <%= @user.first_name %>
+  <% end %>
+  <p>
+  <h4>Subject</h4>
+  <%= f.text_area(:subject, size: "80x2") %>
+  <p>
+  <h4>Message</h4>
+  <%= f.text_area(:message, size: "80x15") %>
+
+  <%= f.submit "send" %>
+  <p>
+  <%= link_to 'volver a perfil', '/users/'+ current_user.id.to_s %>
+<% end %>

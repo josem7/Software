@@ -1,0 +1,11 @@
+<h1>Busco clases</h1>
+
+<%= render 'form', clases_busco: @clases_busco %>
+
+<% if @room %>
+<%= link_to 'Back', campu_room_path(@campu, @room) %>
+<% end %>
+
+<% if @curso %>
+<%= link_to 'Back', curso_path(@curso) %>
+<% end %>

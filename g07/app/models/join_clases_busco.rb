@@ -1,0 +1,2 @@
+class JoinClasesBusco < ApplicationRecord
+end

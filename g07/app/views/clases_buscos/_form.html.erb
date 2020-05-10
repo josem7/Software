@@ -1,0 +1,69 @@
+<% if not @curso%>
+<%= form_with(model: @clases_busco, url: campu_room_clases_buscos_path, local: true) do |form| %>
+  <% if clases_busco.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(clases_busco.errors.count, "error") %> prohibited this clases_busco from being saved:</h2>
+
+      <ul>
+      <% clases_busco.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+   <%= form.label :curso_sel, "Seleccionar Cruso"%><br>
+   <%= form.collection_select :curso_sel, Curso.order(:nombre),:id,:nombre, include_blank: true %>
+ </div>
+
+ <div class="field">
+   <%= form.label :inicio %>
+   <%= form.datetime_select :inicio, id: :clases_busco_inicio %>
+ </div>
+
+  <div class="field">
+    <%= form.label :termino %>
+    <%= form.datetime_select :termino, id: :clases_busco_termino %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Buscar Clase"%>
+  </div>
+<% end %>
+<% end %>
+
+<% if not @room%>
+<%= form_with(model: @clases_busco, url: curso_clases_buscos_path, local: true) do |form| %>
+  <% if clases_busco.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(clases_busco.errors.count, "error") %> prohibited this clases_busco from being saved:</h2>
+
+      <ul>
+      <% clases_busco.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+   <%= form.label :room_sel, "Seleccionar Sala"%><br>
+   <%= form.collection_select :room_sel, Room.order(:nombre),:id,:nombre, include_blank: true %>
+ </div>
+
+ <div class="field">
+   <%= form.label :inicio %>
+   <%= form.datetime_select :inicio, id: :clases_busco_inicio %>
+ </div>
+
+ <div class="field">
+   <%= form.label :termino %>
+   <%= form.datetime_select :termino, id: :clases_busco_termino %>
+ </div>
+
+  <div class="actions">
+    <%= form.submit "Buscar Clase"%>
+  </div>
+<% end %>
+<% end %>

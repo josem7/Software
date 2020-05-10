@@ -1,0 +1,79 @@
+<% if not @curso %>
+<%= form_with(model: @clases_ofrezco, url: campu_room_clases_ofrezcos_path, local: true) do |form| %>
+  <% if clases_ofrezco.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(clases_ofrezco.errors.count, "error") %> prohibited this clases_ofrezco from being saved:</h2>
+
+      <ul>
+      <% clases_ofrezco.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+   <%= form.label :curso_sel, "Seleccionar Curso"%><br>
+   <%= form.collection_select :curso_sel, Curso.order(:nombre),:id,:nombre, include_blank: true %>
+ </div>
+
+  <div class="field">
+    <%= form.label :precio %>
+    <%= form.text_field :precio, id: :clases_ofrezco_precio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inicio %>
+    <%= form.datetime_select :inicio, id: :clases_ofrezco_inicio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :termino %>
+    <%= form.datetime_select :termino, id: :clases_ofrezco_termino %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Ofrecer Clase"%>
+  </div>
+<% end %>
+<% end %>
+
+<% if not @room %>
+<%= form_with(model: @clases_ofrezco, url: curso_clases_ofrezcos_path, local: true) do |form| %>
+  <% if clases_ofrezco.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(clases_ofrezco.errors.count, "error") %> prohibited this clases_ofrezco from being saved:</h2>
+
+      <ul>
+      <% clases_ofrezco.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+   <%= form.label :room_sel, "Seleccionar Sala"%><br>
+   <%= form.collection_select :room_sel, Room.order(:nombre),:id,:nombre, include_blank: true %>
+ </div>
+
+  <div class="field">
+    <%= form.label :precio %>
+    <%= form.text_field :precio, id: :clases_ofrezco_precio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inicio %>
+    <%= form.datetime_select :inicio, id: :clases_ofrezco_inicio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :termino %>
+    <%= form.datetime_select :termino, id: :clases_ofrezco_termino %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Ofrecer Clase"%>
+  </div>
+<% end %>
+<% end %>

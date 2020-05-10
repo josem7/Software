@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  ubicacion: MyText
+  ptje_disponibilidad: 1.5
+  ptje_enchufes: 1.5
+  ptje_ruido: 1.5
+
+two:
+  nombre: MyString
+  ubicacion: MyText
+  ptje_disponibilidad: 1.5
+  ptje_enchufes: 1.5
+  ptje_ruido: 1.5

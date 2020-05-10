@@ -1,0 +1,13 @@
+<h1>Editar Grupo Estudio</h1>
+
+<%= render 'editform', grupo_estudio: @grupo_estudio %>
+
+<%= link_to 'Show', @grupo_estudio %> |
+
+<% if @curso %>
+<%= link_to 'Back to curso', curso_path(@curso) %>
+<% end %>
+
+<% if @room %>
+<%= link_to 'Back to sala', campu_room_path(@campu, @room) %>
+<% end %>

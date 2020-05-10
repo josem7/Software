@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Grupo Estudios</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Curso</th>
+      <th>Capacidad</th>
+      <th>Hora termino</th>
+      <th>Fecha creacion</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @grupo_estudios.each do |grupo_estudio| %>
+      <tr>
+        <td><%= grupo_estudio.curso %></td>
+        <td><%= grupo_estudio.capacidad %></td>
+        <td><%= grupo_estudio.hora_termino %></td>
+        <td><%= grupo_estudio.fecha_creacion %></td>
+        <td><%= link_to 'Show', grupo_estudio %></td>
+        <td><%= link_to 'Edit', edit_grupo_estudio_path(grupo_estudio) %></td>
+        <td><%= link_to 'Destroy', grupo_estudio, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Grupo Estudio', new_grupo_estudio_path %>
